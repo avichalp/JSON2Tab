@@ -2,26 +2,64 @@
 *
 
 */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Loader from 'react-loader';
+
+const style = {
+    table: {
+	'border': '1px solid black',
+	'width': '100%',
+	'marginTop': '20px'
+    },
+    th: {
+	'height': '50px',
+	'textAlign': 'left'
+    },
+    td: {
+	'border': '1px solid black',
+	'height': '50px',
+	'verticalAlign': 'bottom'
+    },
+    button: {
+	go: {
+	    'color': 'black',
+	    'background': '#B9B9B9',
+	    'borderRadius': '3px',
+	    'borderColor': '#B9B9B9',
+	    'marginLeft': '10px',
+	    'marginBottom': '10px',
+	    'borderStyle': 'hidden'
+	}
+    },
+    input: {
+	'marginLeft': '0px',
+	'marginRight': '4px'
+    },
+    navbar: {
+	'marginTop': '30px'
+    }
+
+};
 
 var Promotion = React.createClass({
     render: function() {
 	return (
-	    
-	    <tr className="promotions">
-            <td>{this.props.promotion.promotion.headline_2}</td>
-	    <td>{this.props.promotion.promotion.promotion_id}</td>
-	    <td>{this.props.promotion.merchant.id}</td>
-	    <td>{this.props.promotion.merchant.chain_id}</td>
-	    </tr>
+		<tr className="promotions">
+		<td style={style.td}>{this.props.promotion.promotion.headline_2}</td>
+		<td style={style.td}>{this.props.promotion.promotion.promotion_id}</td>
+		<td style={style.td}>{this.props.promotion.merchant.id}</td>
+		<td style={style.td}>{this.props.promotion.merchant.chain_id}</td>
+		</tr>
     );
   }
 });
 
 var PromotionBox = React.createClass({
     loadPromotionsFromServer: function() {
-	fetch(this.props.url, {
+	this.setState({loaded: false});
+	fetch(this.props.url + '&lat=' + this.state.lat + '&lon=' + this.state.lon, {
 	    'method': 'GET',
 	    headers: new Headers({
 		'Content-Type': 'Application/Json',
@@ -29,27 +67,59 @@ var PromotionBox = React.createClass({
 	    })
 	})
 	    .then((response) => response.json())
-	    .then((response) => 
+	    .then((response) =>
 		this.setState({
-		    data: response.feed.filter(o => o.type === 1)[0].objects
+		    data: response.feed.filter(o => o.type === 1)[0].objects,
+		    loaded: true
 		}))
-	    .error((err) => console.log(err));
+	    .catch((err) => console.log(err));
     },
 
     getInitialState: function() {
-	return {data: []};
+	return {
+	    data: [],
+	    lat: '28.4472372',
+	    lon: '77.04061469999999',
+	    loaded: false
+	};
+    },
+
+    handleLatChange: function(evt) {
+	this.setState({
+	    lat: evt.target.value,
+	    lon: this.state.lon
+	});
+    },
+
+    handleLonChange: function(evt) {
+	this.setState({
+	    lat: this.state.lat,
+	    lon: evt.target.value
+	});
     },
 
     componentDidMount: function() {
 	this.loadPromotionsFromServer();
-	setInterval(this.loadPromotionsFromServer, this.props.pollInterval);
     },
-    
+
     render: function() {
 	return (
-		<div className="commentBox">
-		<h1>Promotions</h1>
+
+		<div>
+
+		<div style={style.navbar}>
+		<span>Promotions at: </span>
+		<input style={style.input} placeholder={this.state.lat} value={this.state.value} onChange={this.handleLatChange} />
+		<input style={style.input} placeholder={this.state.lon} value={this.state.value} onChange={this.handleLonChange} />
+		<button style={style.button.go} onClick={this.loadPromotionsFromServer}>Go!</button>
+		</div>
+
+		<div>
+		<Loader loaded={this.state.loaded}>
 		<PromotionList data={this.state.data} />
+		</Loader>
+		</div>
+
 		</div>
 	);
     }
@@ -58,32 +128,36 @@ var PromotionBox = React.createClass({
 
 var PromotionList = React.createClass({
     render: function() {
-	console.log(this.props.data);
 	var commentNodes = this.props.data.map(function(promotion) {
 	    return (
-		    <Promotion promotion={promotion} key={promotion.promotion.promotion_id}>    
+		    <Promotion
+		promotion={promotion}
+		key={promotion.promotion.promotion_id}>
 		    </Promotion>
 	    );
 	});
 	return (
-	    <table className="commentList">
-	    <tr>
-	    <th>name</th>
-	    <th>promotion id</th>
-	    <th>merchant id</th>
-	    <th>chain id</th>
-	    </tr>
-	    <tbody>
+		<table style={style.table}>
+		<tbody>
+		<tr>
+		<th style={style.th}>name</th>
+		<th style={style.th}>promotion id</th>
+		<th style={style.th}>merchant id</th>
+		<th style={style.th}>chain id</th>
+		</tr>
+		</tbody>
+		<tbody>
 		{commentNodes}
 	    </tbody>
-	    </table>
+		</table>
 	);
     }
 });
 
 ReactDOM.render(
-	<PromotionBox url="https://api.grofers.com/v2/search/feed/?lat=28.54282379999999&lon=77.23954789999999&page=0" pollInterval={200000000}
-    authKey="c0915c6ad1e5720c764559053e16dc75fde6c70b456af3491a3ff135cfcdf0ff"/>,
+	<div>
+	<PromotionBox url="https://api.grofers.com/v2/search/feed/?page=0" pollInterval={200000000}
+    authKey="c0915c6ad1e5720c764559053e16dc75fde6c70b456af3491a3ff135cfcdf0ff"/>
+    </div>,
     document.getElementById('app')
 );
-
