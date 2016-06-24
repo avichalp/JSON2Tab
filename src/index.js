@@ -4,12 +4,14 @@
 */
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Router, route, hashHistory} from 'react-router';
 import PromotionBox from './components/promotionBox';
+import Register from './components/register'
 
 ReactDOM.render(
-	<div>
-	<PromotionBox url="https://api.grofers.com/v2/search/feed/?page=0" pollInterval={200000000}
-    authKey="c0915c6ad1e5720c764559053e16dc75fde6c70b456af3491a3ff135cfcdf0ff"/>
-    </div>,
+	<Router history={hashHistory}>
+	<route path="/" component={Register}/>
+	<route path="/promotions" component={PromotionBox}/>
+	</Router>,
     document.getElementById('app')
 );
