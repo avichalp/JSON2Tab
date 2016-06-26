@@ -4,12 +4,14 @@ import style from '../style';
 export default React.createClass({
 
     save: function(key, toPersist) {
-	localStorage.setItem(key, JSON.stringify(toPersist));
+	var paths = JSON.parse(localStorage.getItem('paths')) || {};
+	paths[key] = toPersist;
+	localStorage.setItem('paths', JSON.stringify(paths));
     },
 
     getInitialState: function() {
 	return {
-	    url: "api.gorfers.com"
+	    url: "api.grofers.com"
 	}
     },
 
@@ -22,7 +24,7 @@ export default React.createClass({
     },
 
     handleRegister: function() {
-	this.save(this.state.name, {'url': this.state.url})
+	this.save(this.state.name, this.state.url)
     },
 
     render: function() {
