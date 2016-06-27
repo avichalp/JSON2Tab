@@ -42,6 +42,15 @@ export default React.createClass({
 	};
 	var table = d3.select('body').select('table') || d3.select('body').append('table');
 	var thead = table.select('thead')[0][0] ?  table.select('thead'): table.append('thead');
+	
+	var paths  = JSON.parse(localStorage.getItem('paths'));
+	var columnNames = paths[this.props.location.pathname.replace('dashboards', '').replace('/', '').replace('/', '')]['columns'] || [];
+	columnNames.push({
+	    id: 'col' + this.state.columnCounter,
+	    name: this.state.tempColumnName
+	});
+	paths[this.props.location.pathname.replace('dashboards', '').replace('/', '').replace('/', '')]['columns'] = columnNames;
+	localStorage.setItem('paths', JSON.stringify(paths));
 	this.state.columnNames.push({
 	    id: 'col' + this.state.columnCounter,
 	    name: this.state.tempColumnName
@@ -53,7 +62,7 @@ export default React.createClass({
 
 	thead
 	    .selectAll('th')
-	    .data(this.state.columnNames)
+	    .data(columnNames.map(o => o.name))
 	    .enter()
 	    .append('th')
 	    .attr('id', function(column) {return column.id;})
@@ -74,19 +83,19 @@ export default React.createClass({
 	
 	// create a cell in each row for each column
 	var cells = _rows.selectAll('td')
-		.data(function(row) {
-		    return this.state.columnNames.map(function (column) {
-			var finalProp = row;
-			this.state.propertyPath.forEach(function (p){
-			    finalProp = finalProp.getattr(p);
-			});
-			return {column: column, value: finalProp};
-		    }.bind(this));
-		}.bind(this))
-		.enter()
-		.append('td')
-		.attr('id', function(d) {return d.column.id;})
-		.text(function (d) { return d.value; });
+	    .data(function(row) {
+		return this.state.columnNames.map(function (column) {
+		    var finalProp = row;
+		    this.state.propertyPath.forEach(function (p){
+			finalProp = finalProp.getattr(p);
+		    });
+		    return {column: column, value: finalProp};
+		}.bind(this));
+	    }.bind(this))
+	    .enter()
+	    .append('td')
+	    .attr('id', function(d) {return d.column.id;})
+	    .text(function (d) { return d.value; });
     },
 
     render: function() {

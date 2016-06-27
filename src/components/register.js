@@ -5,7 +5,7 @@ export default React.createClass({
 
     save: function(key, toPersist) {
 	var paths = JSON.parse(localStorage.getItem('paths')) || {};
-	paths[key] = toPersist;
+	paths[key] = {url: toPersist};
 	localStorage.setItem('paths', JSON.stringify(paths));
     },
 
@@ -33,7 +33,7 @@ export default React.createClass({
 		<input style={style.input} placeholder="Name" value={this.state.value} onChange={this.handleNameChange}/>
 		<input style={style.input} placeholder="Api Endpoint" value={this.state.value} onChange={this.handleUrlChange}/>
 		<button style={style.button.go} onClick={this.handleRegister}>Register</button>
-	    </div>
+		</div>
 	);
     }
 });

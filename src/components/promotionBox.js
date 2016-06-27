@@ -7,12 +7,12 @@ export default React.createClass({
 
     loadPromotionsFromServer: function() {
 	this.setState({loaded: false});
+	var reqHeaders = new Headers();
+	reqHeaders.append('Content-Type', 'Application/Json');
+	reqHeaders.append('auth_key', this.state.authKey);
 	fetch(this.state.url + this.state.queryString, {
 	    'method': 'GET',
-	    headers: new Headers({
-		'Content-Type': 'Application/Json',
-		'auth_key': this.state.authKey
-	    })
+	    headers: reqHeaders
 	})
 	    .then((response) => response.json())
 	    .then((response) =>
@@ -25,7 +25,7 @@ export default React.createClass({
 
     getUrl: function() {
 	const paths = JSON.parse(localStorage.getItem('paths'));
-	return paths[this.props.location.pathname.replace('dashboards', '').replace('/', '').replace('/', '')];
+	return paths[this.props.location.pathname.replace('dashboards', '').replace('/', '').replace('/', '')].url;
     },
 
     getInitialState: function() {
@@ -59,7 +59,7 @@ export default React.createClass({
 		</div>
 		<div>
 		<Loader loaded={this.state.loaded}>
-		<PromotionList data={this.state.data} />
+		<PromotionList data={this.state.data} {...this.props}/>
 		</Loader>
 		</div>
 		</div>
