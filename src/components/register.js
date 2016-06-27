@@ -4,7 +4,7 @@ import style from '../style';
 export default React.createClass({
 
     save: function(key, toPersist) {
-	var paths = JSON.parse(localStorage.getItem('paths')) || {};
+	var paths = JSON.parse(localStorage.getItem('paths') || '{}');
 	paths[key] = {url: toPersist};
 	localStorage.setItem('paths', JSON.stringify(paths));
     },

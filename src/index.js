@@ -7,6 +7,7 @@ import PromotionBox from './components/promotionBox';
 import Register from './components/register'
 
 const Dashboards = React.createClass({
+
     getInitialState: function() {
 	return {dashboards: []}
     },
@@ -15,7 +16,7 @@ const Dashboards = React.createClass({
 	const paths = JSON.parse(localStorage.getItem('paths') || '{}');
 	this.state.dashboards = Object.keys(paths);
 	return (
-		<div>
+ 		<div>
 		{this.state.dashboards.map(function (p) {return <li key={p}><Link to={'/dashboards/' + p}>{p}</Link></li>})}
 	    </div>	
 	);

@@ -29,12 +29,12 @@ export default React.createClass({
 	    'propertyPath': evt.target.value.split('.')
 	});
     },
-    
+
     deleteColumn: function(evt){
 	d3.selectAll('#' + evt.id).remove();
 	this.state.columnNames.pop(this.state.columnNames.indexOf(evt.name));
     },
-    
+
     addColumnData: function() {
 	this.state.columnCounter += 1;
 	Object.prototype.getattr = function(prop){
@@ -42,15 +42,7 @@ export default React.createClass({
 	};
 	var table = d3.select('body').select('table') || d3.select('body').append('table');
 	var thead = table.select('thead')[0][0] ?  table.select('thead'): table.append('thead');
-	
-	var paths  = JSON.parse(localStorage.getItem('paths'));
-	var columnNames = paths[this.props.location.pathname.replace('dashboards', '').replace('/', '').replace('/', '')]['columns'] || [];
-	columnNames.push({
-	    id: 'col' + this.state.columnCounter,
-	    name: this.state.tempColumnName
-	});
-	paths[this.props.location.pathname.replace('dashboards', '').replace('/', '').replace('/', '')]['columns'] = columnNames;
-	localStorage.setItem('paths', JSON.stringify(paths));
+
 	this.state.columnNames.push({
 	    id: 'col' + this.state.columnCounter,
 	    name: this.state.tempColumnName
@@ -62,13 +54,13 @@ export default React.createClass({
 
 	thead
 	    .selectAll('th')
-	    .data(columnNames.map(o => o.name))
+	    .data(this.state.columnNames)
 	    .enter()
 	    .append('th')
 	    .attr('id', function(column) {return column.id;})
 	    .on('dblclick', this.deleteColumn)
 	    .text(function (column) {return column.name;});
-	
+
 	var _rows = undefined;
 	if (table.selectAll('tr')[0][0] === undefined){
 	    _rows = table
@@ -80,7 +72,7 @@ export default React.createClass({
 	    _rows = table
 		.selectAll('tr');
 	}
-	
+
 	// create a cell in each row for each column
 	var cells = _rows.selectAll('td')
 	    .data(function(row) {
