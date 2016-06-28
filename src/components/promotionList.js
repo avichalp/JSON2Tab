@@ -1,5 +1,6 @@
 import d3 from 'd3';
 import React from 'react';
+import ReactFauxDom from 'react-faux-dom';
 import style from '../style';
 
 export default React.createClass({
@@ -40,7 +41,9 @@ export default React.createClass({
 	Object.prototype.getattr = function(prop){
 	    return this[prop];
 	};
-	var table = d3.select('body').select('table') || d3.select('body').append('table');
+	var table = d3.select('body').select('table')[0][0] ? d3.select('body').select('table') : d3.select('body').append('table');
+	//ReactFauxDom.createElement('table');
+
 	var thead = table.select('thead')[0][0] ?  table.select('thead'): table.append('thead');
 
 	this.state.columnNames.push({
@@ -79,7 +82,9 @@ export default React.createClass({
 		return this.state.columnNames.map(function (column) {
 		    var finalProp = row;
 		    this.state.propertyPath.forEach(function (p){
-			finalProp = finalProp.getattr(p);
+			if (finalProp){
+			    finalProp = finalProp.getattr(p);
+			}
 		    });
 		    return {column: column, value: finalProp};
 		}.bind(this));
@@ -100,8 +105,6 @@ export default React.createClass({
 		<button style={style.button.go} onClick={this.addColumnData}>Add Column</button>
 		</div>
 		<div>
-		<table>
-		</table>
 		</div>
 		</div>
 	);
