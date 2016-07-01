@@ -6,29 +6,16 @@ import {Router, route, hashHistory, Link} from 'react-router';
 import PromotionBox from './components/promotionBox';
 import Register from './components/register'
 
-const Dashboards = React.createClass({
+Object.prototype.getattr = function(prop){
+    return this[prop];
+};
 
-    getInitialState: function() {
-	return {dashboards: []}
-    },
-    
-    render: function() {
-	const paths = JSON.parse(localStorage.getItem('paths') || '{}');
-	this.state.dashboards = Object.keys(paths);
-	return (
- 		<div>
-		{this.state.dashboards.map(function (p) {return <li key={p}><Link to={'/dashboards/' + p}>{p}</Link></li>})}
-	    </div>	
-	);
-    }
-});
 
 const Home = React.createClass({
     render: function() {
 	return (
 		<div>
 		<span><Register/></span>
-		<span><Dashboards/></span>
 		</div>
 	);
     }
@@ -36,7 +23,7 @@ const Home = React.createClass({
 
 ReactDOM.render(
 	<Router history={hashHistory}>
-	<route path="/" component={Home}/>
+	<route path="/" component={Register}/>
 	<route path="/dashboards/*" component={PromotionBox}/>
 	</Router>,
     document.getElementById('app')

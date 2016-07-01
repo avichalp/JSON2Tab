@@ -3,6 +3,7 @@ import React from 'react';
 import ReactFauxDom from 'react-faux-dom';
 import style from '../style';
 
+
 export default React.createClass({
 
     getInitialState: function() {
@@ -38,10 +39,6 @@ export default React.createClass({
     },
 
     addColumnData: function() {
-	this.state.columnCounter += 1;
-	Object.prototype.getattr = function(prop){
-	    return this[prop];
-	};
 	this.state.columnNames.push({
 	    id: 'col' + this.state.columnCounter,
 	    name: this.state.tempColumnName
@@ -50,8 +47,11 @@ export default React.createClass({
 	this.state.objectPath.forEach(function(p) {
 	    finalObject = finalObject.getattr(p);
 	});
-	this.state.finalObject = finalObject;
-	this.render();
+	this.setState({
+	    columnCounter: this.state.columnCounter += 1,
+	    columnNames: this.state.columnNames,
+	    finalObject: finalObject
+	})
     },
 
     render: function() {

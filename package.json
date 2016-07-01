@@ -33,6 +33,6 @@
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-faux-dom": "^2.6.2",
-    "react-router": "^2.5.0"
+      "react-router": "^2.5.0"
   }
 }
