@@ -5,7 +5,7 @@ export default React.createClass({
 
     save: function(key, toPersist) {
 	var paths = JSON.parse(localStorage.getItem('paths') || '{}');
-	paths[key] = {url: toPersist};
+	paths[key] = toPersist;
 	localStorage.setItem('paths', JSON.stringify(paths));
     },
 
@@ -24,7 +24,8 @@ export default React.createClass({
     },
 
     handleRegister: function() {
-	this.save(this.state.name, this.state.url)
+	this.save(this.state.name, this.state.url);
+	this.render();
     },
 
     render: function() {
