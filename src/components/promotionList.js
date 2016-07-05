@@ -19,7 +19,6 @@ export default React.createClass({
     },
 
     componentDidMount: function() {
-	console.log('MOUNTED');
 	const paths = JSON.parse(localStorage.getItem('paths'));
 	var pathKey = this.props.location.pathname
 	    .replace('dashboards', '')
@@ -51,6 +50,14 @@ export default React.createClass({
 
     deleteColumn: function(evt){
 	d3.selectAll('#col' + evt.id).remove();
+	const paths = JSON.parse(localStorage.getItem('paths'));
+	var pathKey = this.props.location.pathname
+	    .replace('dashboards', '')
+	    .replace('/', '')
+	    .replace('/', '');
+	paths[pathKey].columns = paths[pathKey].columns.filter((c) => c.id !== evt.id);
+	localStorage.setItem('paths', JSON.stringify(paths));
+	this.setState({'paths': paths});
 	this.state.columnNames.pop(this.state.columnNames.indexOf(evt.name));
     },
 
@@ -82,6 +89,7 @@ export default React.createClass({
 	paths[pathKey]['objectPath'] = this.state.objectPath;
 	paths[pathKey]['columns'].push(toSave);
 	localStorage.setItem('paths', JSON.stringify(paths));
+	this.setState({'paths': paths});
 
     },
 
