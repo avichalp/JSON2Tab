@@ -8,13 +8,29 @@ export default React.createClass({
 
     getInitialState: function() {
 	return {
+	    'paths': {},
 	    'tempColumnName': 'default',
 	    'columnNames': [],
 	    'objectPath': [],
 	    'propertyPath': [],
 	    'columnCounter': 0,
 	    'finalObject': {}
-	}
+	};
+    },
+
+    componentDidMount: function() {
+	console.log('MOUNTED');
+	const paths = JSON.parse(localStorage.getItem('paths'));
+	var pathKey = this.props.location.pathname
+	    .replace('dashboards', '')
+	    .replace('/', '')
+	    .replace('/', '');
+	var finalObject = this.props.data;
+	paths[pathKey].objectPath.forEach(function(p) {
+	    finalObject = finalObject.getattr(p);
+	});
+	this.setState({'paths': paths});
+
     },
 
     getColumnName: function(evt) {
@@ -34,7 +50,7 @@ export default React.createClass({
     },
 
     deleteColumn: function(evt){
-	d3.selectAll('#' + evt.id).remove();
+	d3.selectAll('#col' + evt.id).remove();
 	this.state.columnNames.pop(this.state.columnNames.indexOf(evt.name));
     },
 
@@ -51,24 +67,53 @@ export default React.createClass({
 	    columnCounter: this.state.columnCounter += 1,
 	    columnNames: this.state.columnNames,
 	    finalObject: finalObject
-	})
+	});
+	var toSave = {
+	    id: this.state.columnCounter,
+	    name: this.state.tempColumnName,
+	    propertyPath: this.state.propertyPath
+	}
+	var paths = JSON.parse(localStorage.getItem('paths'));
+	var pathKey = this.props.location.pathname
+	    .replace('dashboards', '')
+	    .replace('/', '')
+	    .replace('/', '');
+
+	paths[pathKey]['objectPath'] = this.state.objectPath;
+	paths[pathKey]['columns'].push(toSave);
+	localStorage.setItem('paths', JSON.stringify(paths));
+
     },
 
     render: function() {
+	var pathKey = this.props.location.pathname
+	    .replace('dashboards', '')
+	    .replace('/', '')
+	    .replace('/', '');
+
+	var finalObject = this.props.data;
+	if (this.state.paths[pathKey]) {
+	    this.state.paths[pathKey].objectPath.forEach(function(p) {
+		finalObject = finalObject.getattr(p);
+	    });
+	    var columns = this.state.paths[pathKey].columns;
+	} else {
+	    columns = [];
+	}
 	var table = new ReactFauxDom.Element('table');
 	var thead = d3.select('thead')[0][0] ? d3.select('thead') : d3.select('table').append('thead');
 	thead
 	    .selectAll('th')
-	    .data(this.state.columnNames)
+	    .data(columns)
 	    .enter()
 	    .append('th')
-	    .attr('id', function(column) {return column.id;})
+	    .attr('id', function(column) {return 'col' + column.id;})
 	    .on('dblclick', this.deleteColumn)
 	    .text(function (column) {return column.name;});
 
 	d3.select('table')
 	    .selectAll('tr')
-	    .data(this.state.finalObject)
+	    .data(finalObject)
 	    .enter()
 	    .append('tr');
 
@@ -76,9 +121,9 @@ export default React.createClass({
 	    .selectAll('tr')
 	    .selectAll('td')
 	    .data(function(row) {
-		return this.state.columnNames.map(function (column) {
+		return columns.map(function (column) {
 		    var finalProp = row;
-		    this.state.propertyPath.forEach(function (p){
+		    column.propertyPath.forEach(function (p){
 			if (finalProp){
 			    finalProp = finalProp.getattr(p);
 			}
@@ -88,7 +133,7 @@ export default React.createClass({
 	    }.bind(this))
 	    .enter()
 	    .append('td')
-	    .attr('id', function(d) {return d.column.id;})
+	    .attr('id', function(d) {return 'col' + d.column.id;})
 	    .text(function (d) { return d.value; });
 
 	return (

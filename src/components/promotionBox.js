@@ -25,7 +25,7 @@ export default React.createClass({
 
     getUrl: function() {
 	const paths = JSON.parse(localStorage.getItem('paths'));
-	return paths[this.props.location.pathname.replace('dashboards', '').replace('/', '').replace('/', '')];
+	return paths[this.props.location.pathname.replace('dashboards', '').replace('/', '').replace('/', '')].url;
     },
 
     getInitialState: function() {

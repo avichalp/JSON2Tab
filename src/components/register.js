@@ -27,7 +27,7 @@ export default React.createClass({
     },
 
     handleRegister: function() {
-	this.save(this.state.name, this.state.url);
+	this.save(this.state.name, {url: this.state.url, columns: []});
 	const paths = JSON.parse(localStorage.getItem('paths') || '{}');
 	this.setState({
 	    dashboards: Object.keys(paths)
