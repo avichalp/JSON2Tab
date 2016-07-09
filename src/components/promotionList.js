@@ -20,14 +20,17 @@ export default React.createClass({
 
     componentDidMount: function() {
 	const paths = JSON.parse(localStorage.getItem('paths'));
+	console.log(paths);
 	var pathKey = this.props.location.pathname
 	    .replace('dashboards', '')
 	    .replace('/', '')
 	    .replace('/', '');
 	var finalObject = this.props.data;
-	paths[pathKey].objectPath.forEach(function(p) {
-	    finalObject = finalObject.getattr(p);
-	});
+	if (paths[pathKey].objectPath) {
+	    paths[pathKey].objectPath.forEach(function(p) {
+		finalObject = finalObject.getattr(p);
+	    });
+	}
 	this.setState({'paths': paths});
 
     },
@@ -100,7 +103,7 @@ export default React.createClass({
 	    .replace('/', '');
 
 	var finalObject = this.props.data;
-	if (this.state.paths[pathKey]) {
+	if (this.state.paths[pathKey] && this.state.paths[pathKey].objectPath) {
 	    this.state.paths[pathKey].objectPath.forEach(function(p) {
 		finalObject = finalObject.getattr(p);
 	    });
