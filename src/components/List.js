@@ -4,10 +4,11 @@ import ReactFauxDom from 'react-faux-dom';
 import style from '../style';
 
 
-export default React.createClass({
+export default class List extends React.Component {
 
-    getInitialState: function() {
-	return {
+    constructor(props, context) {
+	super(props, context);
+	this.state = {
 	    'paths': {},
 	    'tempColumnName': 'default',
 	    'columnNames': [],
@@ -16,11 +17,10 @@ export default React.createClass({
 	    'columnCounter': 0,
 	    'finalObject': {}
 	};
-    },
+    }
 
-    componentDidMount: function() {
+    componentDidMount() {
 	const paths = JSON.parse(localStorage.getItem('paths'));
-	console.log(paths);
 	var pathKey = this.props.location.pathname
 	    .replace('dashboards', '')
 	    .replace('/', '')
@@ -33,25 +33,25 @@ export default React.createClass({
 	}
 	this.setState({'paths': paths});
 
-    },
+    }
 
-    getColumnName: function(evt) {
+    getColumnName(evt) {
 	this.setState({'tempColumnName': evt.target.value});
-    },
+    }
 
-    getObjectPath: function(evt) {
+    getObjectPath(evt) {
 	this.setState({
 	    'objectPath': evt.target.value.split('.')
 	});
-    },
+    }
 
-    getPropertyPath: function(evt) {
+    getPropertyPath(evt) {
 	this.setState({
 	    'propertyPath': evt.target.value.split('.')
 	});
-    },
+    }
 
-    deleteColumn: function(evt){
+    deleteColumn(evt) {
 	d3.selectAll('#col' + evt.id).remove();
 	const paths = JSON.parse(localStorage.getItem('paths'));
 	var pathKey = this.props.location.pathname
@@ -62,9 +62,9 @@ export default React.createClass({
 	localStorage.setItem('paths', JSON.stringify(paths));
 	this.setState({'paths': paths});
 	this.state.columnNames.pop(this.state.columnNames.indexOf(evt.name));
-    },
+    }
 
-    addColumnData: function() {
+    addColumnData() {
 	this.state.columnNames.push({
 	    id: 'col' + this.state.columnCounter,
 	    name: this.state.tempColumnName
@@ -94,9 +94,9 @@ export default React.createClass({
 	localStorage.setItem('paths', JSON.stringify(paths));
 	this.setState({'paths': paths});
 
-    },
+    }
 
-    render: function() {
+    render() {
 	var pathKey = this.props.location.pathname
 	    .replace('dashboards', '')
 	    .replace('/', '')
@@ -112,7 +112,13 @@ export default React.createClass({
 	    columns = [];
 	}
 	var table = new ReactFauxDom.Element('table');
-	var thead = d3.select('thead')[0][0] ? d3.select('thead') : d3.select('table').append('thead');
+
+	if (d3.select('thead')[0][0]) {
+	    var thead = d3.select('thead')
+	} else {
+	    var thead = d3.select('table').append('thead');
+	}
+
 	thead
 	    .selectAll('th')
 	    .data(columns)
@@ -148,18 +154,30 @@ export default React.createClass({
 	    .text(function (d) { return d.value; });
 
 	return (
-		<div>
-		<div>
-		<input style={style.input} placeholder="Column Name" value={this.state.value} onChange={this.getColumnName}/>
-		<input style={style.input} placeholder="feed.1.objects" value={this.state.value} onChange={this.getObjectPath}/>
-		<input style={style.input} placeholder="promotion.promotion_id" value={this.state.value} onChange={this.getPropertyPath}/>
-		<button style={style.button.go} onClick={this.addColumnData}>Add Column</button>
-		</div>
-		<div>
-		{table.toReact()}
-		</div>
-		</div>
+	    <div>
+	    <div>
+	    <input
+	    style={style.input}
+	      placeholder="Column Name"
+	      value={this.state.value}
+	      onChange={this.getColumnName} />
+	    <input
+	      style={style.input}
+	      placeholder="feed.1.objects"
+	      value={this.state.value}
+	      onChange={this.getObjectPath} />
+	    <input
+	      style={style.input}
+	      placeholder="promotion.promotion_id"
+	      value={this.state.value}
+	      onChange={this.getPropertyPath} />
+	    <button
+	      style={style.button.go}
+	      onClick={this.addColumnData}>Add Column</ button>
+	    </div>
+	    <div>{table.toReact()}</div>
+	    </div>
 	);
     }
 
-});
+}
