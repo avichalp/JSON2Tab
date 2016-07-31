@@ -20,7 +20,12 @@ export default class Box extends React.Component {
 		'auth_key': authKey
 	    }
 	};
-
+	this.loadPromotionsFromServer = this.loadPromotionsFromServer.bind(this);
+	this.getUrl = this.getUrl.bind(this);
+	this.handleQChange = this.handleQChange.bind(this);
+	this.handleHeaderKeyChange = this.handleHeaderKeyChange.bind(this);
+	this.handleHeaderValueChange = this.handleHeaderValueChange.bind(this);
+	this.addHeader = this.addHeader.bind(this);
     }
 
     componentDidMount() {

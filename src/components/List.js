@@ -17,6 +17,11 @@ export default class List extends React.Component {
 	    'columnCounter': 0,
 	    'finalObject': {}
 	};
+	this.getColumnName = this.getColumnName.bind(this);
+	this.getObjectPath = this.getObjectPath.bind(this);
+	this.getPropertyPath = this.getPropertyPath.bind(this);
+	this.deleteColumn = this.deleteColumn.bind(this);
+	this.addColumnData = this.addColumnData.bind(this);
     }
 
     componentDidMount() {

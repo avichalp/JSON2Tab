@@ -9,7 +9,10 @@ export default class Registration extends React.Component {
 	this.state = {
 	    url: "api.grofers.com",
 	    dashboards: []
-	}
+	};
+	this.handleUrlChange = this.handleUrlChange.bind(this);
+	this.handleNameChange = this.handleNameChange.bind(this);
+	this.handleRegister = this.handleRegister.bind(this);
     }
 
     componentDidMount() {
