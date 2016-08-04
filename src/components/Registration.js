@@ -13,6 +13,7 @@ export default class Registration extends React.Component {
 	this.handleUrlChange = this.handleUrlChange.bind(this);
 	this.handleNameChange = this.handleNameChange.bind(this);
 	this.handleRegister = this.handleRegister.bind(this);
+	this.save = this.save.bind(this);
     }
 
     componentDidMount() {
@@ -26,11 +27,17 @@ export default class Registration extends React.Component {
 	 this.setState({url: evt.target.value});
     }
 
-     handleNameChange(evt) {
-	 this.setState({name: evt.target.value})
+    handleNameChange(evt) {
+	this.setState({name: evt.target.value})
     }
 
-     handleRegister() {
+    save(key, toPersist) {
+	var paths = JSON.parse(localStorage.getItem('paths') || '{}');
+	paths[key] = toPersist;
+	localStorage.setItem('paths', JSON.stringify(paths));
+    }
+    
+    handleRegister() {
 	this.save(this.state.name, {url: this.state.url, columns: []});
 	const paths = JSON.parse(localStorage.getItem('paths') || '{}');
 	this.setState({
