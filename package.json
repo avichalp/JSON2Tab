@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config ./webpack.prod.config.js --progress --colors --hot",
-    "start": "node ./src/app.js"
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "build": "webpack --config ./webpack.prod.config.js --progress --colors --hot",
+      "start": "node ./src/app.js",
+      "startdev": "webpack-dev-server --progress --colors --hot --config ./webpack.config.js"
   },
   "keywords": [],
   "author": "",
