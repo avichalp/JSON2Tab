@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 import style from '../style';
+import '../css/main.css';
+
 
 export default class Registration extends React.Component {
 
@@ -36,7 +38,7 @@ export default class Registration extends React.Component {
 	paths[key] = toPersist;
 	localStorage.setItem('paths', JSON.stringify(paths));
     }
-    
+
     handleRegister() {
 	this.save(this.state.name, {url: this.state.url, columns: []});
 	const paths = JSON.parse(localStorage.getItem('paths') || '{}');
@@ -47,7 +49,7 @@ export default class Registration extends React.Component {
 
     populateLinks(link) {
 	return (
-	    <li
+		<li style={style.liAnchor}
 	      key={link}>
 	    <Link
 	      to={'/dashboards/' + link}>{link}
@@ -58,26 +60,18 @@ export default class Registration extends React.Component {
 
     render() {
 	return (
-	    <div>
-	    <div>
-	    <input
-	      style={style.input}
-	      placeholder="Name"
-	      value={this.state.value}
-	      onChange={this.handleNameChange} />
-	    <input
-	      style={style.input}
-	      placeholder="Api Endpoint"
-	      value={this.state.value}
-	      onChange={this.handleUrlChange} />
-	    <button
-	      style={style.button.go}
-	      onClick={this.handleRegister}>Register </button>
+		<div>
+		<header style={style.header}> J2Tab</header>
+		<div style={style.textContainer}>
+		<input style={style.textBox} placeholder="Name" value={this.state.value} onChange={this.handleNameChange} />
+		<input style={style.textBox} placeholder="Api Endpoint" value={this.state.value} onChange={this.handleUrlChange} />
+		<button style={style.button}onClick={this.handleRegister}> </button>
+
 	    </div>
-	    <div>
-	    {this.state.dashboards.map(this.populateLinks)}
-	     </div>
-	    </div>
+
+		<div>{this.state.dashboards.map(this.populateLinks)}</div>
+		</div>
+
 	);
     }
 

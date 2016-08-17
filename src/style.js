@@ -1,37 +1,38 @@
 const style = {
-    table: {
-	'border': '1px solid black',
-	'width': '100%',
-	'marginTop': '20px'
+    header: {
+	'background-color': '#555',
+	'color': '#fff7f7',
+	'fontSize': '-webkit-xxx-large',
+	'fontFamily': 'monospace',
+	'marginBottom': '.4em'
     },
-    th: {
-	'height': '50px',
-	'textAlign': 'left',
-	'marginRight': '150px'
+    liAnchor: {
+	'textDecoration': 'initial',
+	'color': '#555',
+	'fontFamily': 'monospace',
+	'fontSize': 'xx-large',
+	'margin': '0.2em'
     },
-    td: {
-	'border': '1px solid black',
-	'height': '50px',
-	'verticalAlign': 'bottom'
+    textContainer: {
+	'marginBottom': '2em'
     },
     button: {
-	go: {
-	    'color': 'black',
-	    'background': '#B9B9B9',
-	    'borderRadius': '3px',
-	    'borderColor': '#B9B9B9',
-	    'marginLeft': '10px',
-	    'marginBottom': '10px',
-	    'borderStyle': 'hidden'
-	}
+	'height': '2em',
+	'width': '2em',
+	'border': '0',
+	'borderRadius': '.5em'
     },
-    input: {
-	'marginLeft': '0px',
-	'marginRight': '4px',
-	'width': '500px'
-    },
-    navbar: {
-	'marginTop': '30px'
+    textBox: {
+	'margin': '0.5em',
+	'width': '20em',
+	'height': '1em',
+	'font-size': 'medium',
+	'fontFamily': 'monospace',
+	'border': '0',
+	'outline': '0',
+	'background': 'transparent',
+	'borderBottom': '.0000001em solid #bfb6b6'
+
     }
 };
 

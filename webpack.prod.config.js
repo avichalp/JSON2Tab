@@ -28,11 +28,17 @@ module.exports = {
 	})
     ],
     module: {
-	loaders: [{
-	    test: /\.jsx?$/,
-	    exclude: /node_modules/,
-	    loader: 'react-hot!babel'
-	}]
+	loaders: [
+	    {
+		test: /\.jsx?$/,
+		exclude: /node_modules/,
+		loader: 'react-hot!babel'
+	    },
+	    {
+		test: /\.css$/,
+		loader: "style-loader!css-loader"
+	    }
+	]
     },
     devServer: {
 	contentBase: './dist',

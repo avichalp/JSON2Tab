@@ -92,33 +92,31 @@ export default class Box extends React.Component {
     render() {
 	return (
 	    <div>
-	    <div
-	      style={style.navbar}>
+	    <div>
 	    <h2>
 	      {this.props.location.pathname}< /h2>
 	    <div>Headers
 	    <input
-	      style={style.input}
 	      placeholder={"auth_key"}
 	      value={this.state.value}
 	      onChange={this.handleHeaderKeyChange} />
 	    <input
-	      style={style.input}
+
 	      placeholder={this.state.headers.auth_key}
 	      value={this.state.value}
 	      onChange={this.handleHeaderValueChange} />
 	    <button
-	      style={style.button.go}
+
 	      onClick={this.addHeader}>Add< /button>
 	    < /div>
 	    <span>QueryString: </span>
 	    <input
-	      style={style.input}
+
 	      placeholder={this.state.queryString}
 	      value={this.state.value}
 	      onChange={this.handleQChange} />
 	    <button
-	      style={style.button.go}
+
 	      onClick={this.loadPromotionsFromServer}>Go!< /button>
 	    </div>
 	    <div>
