@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "build": "webpack --config ./webpack.prod.config.js --progress --colors --hot",
-      "start": "node ./src/app.js",
-      "startdev": "webpack-dev-server --progress --colors --hot --config ./webpack.config.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config ./webpack.prod.config.js --progress --colors --hot",
+    "start": "node ./src/app.js",
+    "startdev": "webpack-dev-server --progress --colors --hot --config ./webpack.config.js"
   },
   "keywords": [],
   "author": "",
@@ -33,13 +33,14 @@
   },
   "dependencies": {
     "d3": "^3.5.17",
+    "express": "^4.13.4",
     "fixed-data-table": "^0.6.0",
     "react": "^15.1.0",
     "react-bootstrap": "^0.29.5",
     "react-dom": "^15.1.0",
     "react-faux-dom": "^2.6.2",
+    "react-notification-system": "^0.2.7",
     "react-router": "^2.5.0",
-    "webpack-hot-middleware": "^2.12.2",
-    "express": "^4.13.4"
+    "webpack-hot-middleware": "^2.12.2"
   }
 }

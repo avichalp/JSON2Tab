@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import style from '../style';
 import '../css/main.css';
-
+import NotificationSystem  from 'react-notification-system';
 
 export default class Registration extends React.Component {
 
@@ -23,6 +23,16 @@ export default class Registration extends React.Component {
 	this.setState({
 	    dashboards: Object.keys(paths)
 	});
+	this._notificationSystem = this.refs.notificationSystem;
+	this._addNotification = this._addNotification.bind(this);
+    }
+
+    _addNotification() {
+	//event.preventDefault();
+	this._notificationSystem.addNotification({
+	    message: 'Notification message',
+	    level: 'success'
+	});
     }
 
      handleUrlChange(evt) {
@@ -34,12 +44,14 @@ export default class Registration extends React.Component {
     }
 
     save(key, toPersist) {
+
 	var paths = JSON.parse(localStorage.getItem('paths') || '{}');
 	paths[key] = toPersist;
 	localStorage.setItem('paths', JSON.stringify(paths));
     }
 
     handleRegister() {
+	this._addNotification();
 	this.save(this.state.name, {url: this.state.url, columns: []});
 	const paths = JSON.parse(localStorage.getItem('paths') || '{}');
 	this.setState({
@@ -50,11 +62,11 @@ export default class Registration extends React.Component {
     populateLinks(link) {
 	return (
 		<li style={style.liAnchor}
-	      key={link}>
-	    <Link
-	      to={'/dashboards/' + link}>{link}
+	    key={link}>
+		<Link
+	    to={'/dashboards/' + link}>{link}
 	    </ Link>
-	    </li>
+		</li>
 	);
     }
 
@@ -63,13 +75,14 @@ export default class Registration extends React.Component {
 		<div>
 		<header style={style.header}> J2Tab</header>
 		<div style={style.textContainer}>
-		<input style={style.textBox} placeholder="Name" value={this.state.value} onChange={this.handleNameChange} />
-		<input style={style.textBox} placeholder="Api Endpoint" value={this.state.value} onChange={this.handleUrlChange} />
+		<input style={style.textBox} placeholder="Name eg: MerchantsAPI" value={this.state.value} onChange={this.handleNameChange} />
+		<input style={style.textBox} placeholder="https://api.google.com/" value={this.state.value} onChange={this.handleUrlChange} />
 		<button style={style.button}onClick={this.handleRegister}> </button>
 
 	    </div>
 
 		<div>{this.state.dashboards.map(this.populateLinks)}</div>
+		<NotificationSystem ref="notificationSystem" />
 		</div>
 
 	);
