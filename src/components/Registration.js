@@ -16,6 +16,8 @@ export default class Registration extends React.Component {
 	this.handleNameChange = this.handleNameChange.bind(this);
 	this.handleRegister = this.handleRegister.bind(this);
 	this.save = this.save.bind(this);
+	this._validateUrl = this._validateUrl.bind(this);
+	this._validateName = this._validateName.bind(this);
     }
 
     componentDidMount() {
@@ -44,19 +46,40 @@ export default class Registration extends React.Component {
     }
 
     save(key, toPersist) {
-
 	var paths = JSON.parse(localStorage.getItem('paths') || '{}');
 	paths[key] = toPersist;
 	localStorage.setItem('paths', JSON.stringify(paths));
     }
+    _validateUrl() {
+	var res = this.state.url
+	    .match('/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g');
 
+	if(res == null) {
+	    return false;
+	} else {
+	    return true;
+	}
+    }
+
+    _validateName() {
+	if(this.state.name.length() === 0){
+	    return false;
+	} else {
+	    return true;
+	}
+    }
+    
     handleRegister() {
-	this._addNotification();
-	this.save(this.state.name, {url: this.state.url, columns: []});
-	const paths = JSON.parse(localStorage.getItem('paths') || '{}');
-	this.setState({
-	    dashboards: Object.keys(paths)
-	});
+	if (this._validateUrl() && this._validateName()) {
+	    this.save(this.state.name, {url: this.state.url, columns: []});
+	    const paths = JSON.parse(localStorage.getItem('paths') || '{}');
+	    this.setState({
+		dashboards: Object.keys(paths)
+	    });
+	} else {
+	    console.log('Invalid name or url');
+	}
+	
     }
 
     populateLinks(link) {
