@@ -29,20 +29,34 @@ export default class Registration extends React.Component {
 	this._addNotification = this._addNotification.bind(this);
     }
 
-    _addNotification() {
-	//event.preventDefault();
-	this._notificationSystem.addNotification({
-	    message: 'Notification message',
-	    level: 'success'
-	});
+    _addNotification(event, notifType, message) {
+	event.preventDefault();
+	switch (notifType) {
+	case 'FAILURE':
+	    this._notificationSystem.addNotification({
+		message: message,
+		level: 'error',
+		position: 'tr',
+		autoDismiss: 0
+	    });
+	    break;
+	case 'SUCCESS':
+	    this._notificationSystem.addNotification({
+		message: message,
+		level: 'success',
+		position: 'tr'
+	    })
+
+	}
+
     }
 
-     handleUrlChange(evt) {
-	 this.setState({url: evt.target.value});
+     handleUrlChange(event) {
+	 this.setState({url: event.target.value});
     }
 
-    handleNameChange(evt) {
-	this.setState({name: evt.target.value})
+    handleNameChange(event) {
+	this.setState({name: event.target.value})
     }
 
     save(key, toPersist) {
@@ -51,10 +65,9 @@ export default class Registration extends React.Component {
 	localStorage.setItem('paths', JSON.stringify(paths));
     }
     _validateUrl() {
-	var res = this.state.url
-	    .match('/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g');
-
-	if(res == null) {
+	var re = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
+	var match = re.test(this.state.url)
+	if(match === false) {
 	    return false;
 	} else {
 	    return true;
@@ -62,24 +75,29 @@ export default class Registration extends React.Component {
     }
 
     _validateName() {
-	if(this.state.name.length() === 0){
+	if(this.state.name.length === 0){
 	    return false;
 	} else {
 	    return true;
 	}
     }
-    
-    handleRegister() {
+
+    handleRegister(event) {
 	if (this._validateUrl() && this._validateName()) {
 	    this.save(this.state.name, {url: this.state.url, columns: []});
 	    const paths = JSON.parse(localStorage.getItem('paths') || '{}');
 	    this.setState({
 		dashboards: Object.keys(paths)
 	    });
+	    this._addNotification(event, "SUCCESS",
+				  'Successfully registered');
+
 	} else {
-	    console.log('Invalid name or url');
+	    this._addNotification(event, "FAILURE",
+				  'Failed to register. Either invalid name or url.');
+
 	}
-	
+
     }
 
     populateLinks(link) {
@@ -105,7 +123,7 @@ export default class Registration extends React.Component {
 	    </div>
 
 		<div>{this.state.dashboards.map(this.populateLinks)}</div>
-		<NotificationSystem ref="notificationSystem" />
+		<NotificationSystem ref="notificationSystem" style={style.notification}/>
 		</div>
 
 	);

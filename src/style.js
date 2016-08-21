@@ -33,6 +33,13 @@ const style = {
 	'background': 'transparent',
 	'borderBottom': '.0000001em solid #bfb6b6'
 
+    },
+    notification: {
+	NotificationItem: {
+	    DefaultStyle: {
+
+	    }
+	}
     }
 };
 
