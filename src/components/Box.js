@@ -34,23 +34,25 @@ export default class Box extends React.Component {
 
     loadPromotionsFromServer() {
 	this.setState({loaded: false});
-	var reqHeaders = new Headers();
-	reqHeaders.append('Content-Type', 'Application/Json');
-	for (var k in this.state.headers) {
-	    if (this.state.headers.hasOwnProperty(k)){
-		reqHeaders.append(k, this.state.headers[k])
-	    }
-	}
-	fetch(this.state.url + this.state.queryString, {
-	    'method': 'GET',
-	    headers: reqHeaders
+	fetch('http://localhost:8080/api/go', {
+	    method: 'post',
+	    headers: {
+		'Content-Type': 'application/json'
+	    },
+	    body: JSON.stringify({
+		'url': this.state.url,
+		'queryString': this.state.queryString,
+		'headers': this.state.headers,
+		'method': 'GET'
+	    })
 	})
 	    .then((response) => response.json())
-	    .then((response) =>
+	    .then((response) =>{
 		this.setState({
-		    data: response,
+		    data: JSON.parse(response),
 		    loaded: true
-		}))
+		})
+	    })
 	.catch((err) => console.log(err));
     }
 
@@ -123,7 +125,7 @@ export default class Box extends React.Component {
 	    <Loader
 	      loaded={this.state.loaded}>
 	    <List
-	      data={this.state.data}
+	        data={this.state.data}
 	      {...this.props} />
 	    </Loader>
 	    </div>

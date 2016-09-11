@@ -16,6 +16,7 @@ export default class Registration extends React.Component {
 	this.handleNameChange = this.handleNameChange.bind(this);
 	this.handleRegister = this.handleRegister.bind(this);
 	this.save = this.save.bind(this);
+	this.populateLinks = this.populateLinks.bind(this);
 	this._validateUrl = this._validateUrl.bind(this);
 	this._validateName = this._validateName.bind(this);
     }
@@ -27,6 +28,7 @@ export default class Registration extends React.Component {
 	});
 	this._notificationSystem = this.refs.notificationSystem;
 	this._addNotification = this._addNotification.bind(this);
+
     }
 
     _addNotification(event, notifType, message) {
@@ -101,12 +103,14 @@ export default class Registration extends React.Component {
     }
 
     populateLinks(link) {
+	//<button style={style.deleteButton}>X</button>
 	return (
-		<li style={style.liAnchor}
-	    key={link}>
-		<Link
-	    to={'/dashboards/' + link}>{link}
-	    </ Link>
+
+		<li style={style.liAnchor} key={link} onClick={this._handleOnClick}
+	    id={link}>
+
+		<Link ref={'deleteButton' + link} to={'/dashboards/' + link}>{link}</ Link>
+
 		</li>
 	);
     }

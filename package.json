@@ -32,6 +32,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
     "d3": "^3.5.17",
     "express": "^4.13.4",
     "fixed-data-table": "^0.6.0",
@@ -41,6 +42,7 @@
     "react-faux-dom": "^2.6.2",
     "react-notification-system": "^0.2.7",
     "react-router": "^2.5.0",
+    "request": "^2.74.0",
     "webpack-hot-middleware": "^2.12.2"
   }
 }

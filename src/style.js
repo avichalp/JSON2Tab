@@ -6,12 +6,16 @@ const style = {
 	'fontFamily': 'monospace',
 	'marginBottom': '.4em'
     },
+    li: {
+	'display': 'inline-block'
+    },
     liAnchor: {
 	'textDecoration': 'initial',
 	'color': '#555',
 	'fontFamily': 'monospace',
 	'fontSize': 'xx-large',
-	'margin': '0.2em'
+	'margin': '0.2em',
+	'listStyleType': 'NONE'
     },
     textContainer: {
 	'marginBottom': '2em'
@@ -21,6 +25,13 @@ const style = {
 	'width': '2em',
 	'border': '0',
 	'borderRadius': '.5em'
+    },
+    deleteButton: {
+	'height': '2em',
+	'width': '2em',
+	'border': '0',
+	'borderRadius': '.5em',
+	'marginLeft': '3em'
     },
     textBox: {
 	'margin': '0.5em',
