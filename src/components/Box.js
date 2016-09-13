@@ -34,7 +34,7 @@ export default class Box extends React.Component {
 
     loadPromotionsFromServer() {
 	this.setState({loaded: false});
-	fetch('http://localhost:8080/api/go', {
+	fetch('http://lybot.xyz/api/go', {
 	    method: 'post',
 	    headers: {
 		'Content-Type': 'application/json'
