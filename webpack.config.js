@@ -9,11 +9,12 @@ module.exports = {
 	'./src/index.js'
     ],
     output: {
-	path: __dirname + '/dist',
+	path: __dirname + '/dist/',
 	publicPath: '/dist/',
-	filename: 'bundle.js'
+	filename:  'bundle.js'
+
     },
-        plugins: [
+	plugins: [
 	new webpack.optimize.DedupePlugin(),
 	new webpack.optimize.UglifyJsPlugin({
 	    minimize: true,

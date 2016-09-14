@@ -1,34 +1,31 @@
-const path = require('path')
+const path = require('path');
 const express = require('express')
-const bodyParser = require('body-parser');
-const request = require('request');
+const port = (process.env.PORT || 8080)
+const app = express()
+const config = require('../webpack.config.js')
 
-module.exports = {
-    app: function () {
-	const app = express();
-	const indexPath = path.join(__dirname, '/../dist/index.html');
-	const publicPath = express.static(path.join(__dirname, '../dist'));
-	
-	app.use('/dist', publicPath);
-	app.use(bodyParser.json())
-	app.use(bodyParser.urlencoded({ extended: true }));
-	app.get('/', function (_, res) {
-	    res.sendFile(indexPath)
-	});
+console.log(process.env.NODE_ENV)
 
-	app.post('/api/go', function (req, res) {
-	    res.setHeader('Content-Type', 'application/json')
-	    request({'url': req.body.url + req.body.queryString, 'headers': req.body.headers},
-		    function (error, response, body) {
-			if (!error && response.statusCode == 200) {
-			    res.send(JSON.stringify(body))
-			} else {
-			    res.send(JSON.stringify({'error': true}))
-			}
-		    })
+if (process.env.NODE_ENV !== 'production') {
+    const webpack = require('webpack')
+    const webpackDevMiddleware = require('webpack-dev-middleware')
+    const webpackHotMiddleware = require('webpack-hot-middleware')
+    const compiler = webpack(config)
+    console.log('running in development')
+    app.use(webpackHotMiddleware(compiler))
+    app.use(webpackDevMiddleware(compiler, {
+	noInfo: true,
+	publicPath: config.output.publicPath,
+	contentBase: config.devServer.contentBase
+    }))
+    const indexPath = path.join(__dirname, '/../dist/index.html')
+    app.get('/', function (_, res) {
+	res.sendFile(indexPath)
+    });
 
-	})
-	
-	return app
-    }
+} else {
+    app.use(express.static('dist'));
 }
+
+app.listen(port)
+console.log(`Listening at http://localhost:${port}`)

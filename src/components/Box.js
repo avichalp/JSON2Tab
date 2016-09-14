@@ -47,7 +47,7 @@ export default class Box extends React.Component {
 	    })
 	})
 	    .then((response) => response.json())
-	    .then((response) =>{
+	    .then((response) => {
 		this.setState({
 		    data: JSON.parse(response),
 		    loaded: true
