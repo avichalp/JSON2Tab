@@ -34,22 +34,23 @@ export default class Box extends React.Component {
 
     loadPromotionsFromServer() {
 	this.setState({loaded: false});
-	fetch('http://lybot.xyz/api/go', {
-	    method: 'post',
-	    headers: {
-		'Content-Type': 'application/json'
-	    },
-	    body: JSON.stringify({
-		'url': this.state.url,
-		'queryString': this.state.queryString,
-		'headers': this.state.headers,
-		'method': 'GET'
-	    })
+	var reqHeaders = new Headers();
+	reqHeaders.append('Content-Type', 'Application/Json');
+	for (var k in this.state.headers) {
+	    if (this.state.headers.hasOwnProperty(k)){
+		reqHeaders.append(k, this.state.headers[k])
+	    }
+	}
+	var finalUrl = 'http://192.168.99.100:8080/api/go?url=' + encodeURIComponent(this.state.url) + '&q=' + encodeURIComponent(this.state.queryString);
+	console.log(finalUrl);
+	fetch(finalUrl, {
+	    method: 'GET',
+	    headers: reqHeaders,
 	})
 	    .then((response) => response.json())
 	    .then((response) => {
 		this.setState({
-		    data: JSON.parse(response),
+		    data: response,
 		    loaded: true
 		})
 	    })
