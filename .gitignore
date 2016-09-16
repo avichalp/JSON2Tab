@@ -35,3 +35,7 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+
+# Js build
+dist/bundle.js
+dist/bundle.js.map
