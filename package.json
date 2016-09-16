@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-      "build": "webpack --config ./webpack.config.js --progress --colors --hot",
-      "start": "NODE_ENV=production node ./src/server.js",
+      "build-dev": "webpack --config ./webpack.config.js --progress --colors --hot",
+      "build-prod": "webpack --config ./webpack.config.prod.js --progress --colors --hot",
       "startdev": "webpack-dev-server --progress --colors --hot --config ./webpack.config.js"
   },
   "keywords": [],

@@ -2,10 +2,8 @@ const path = require('path')
 const webpack = require('webpack')
 
 module.exports = {
-    devtool: 'eval',
+    devtool: 'cheap-module-source-map',
     entry: [
-	//'webpack-dev-server/client?http://localhost:8080',
-	//'webpack/hot/only-dev-server',
 	'./src/index.js'
     ],
     output: {
@@ -14,6 +12,20 @@ module.exports = {
 	filename:  'bundle.js'
 
     },
+	plugins: [
+	new webpack.optimize.DedupePlugin(),
+	new webpack.optimize.UglifyJsPlugin({
+	    minimize: true,
+	    compress: {
+		warnings: false
+	    }
+	}),
+	new webpack.DefinePlugin({
+	    'process.env': {
+		'NODE_ENV': JSON.stringify('production')
+	    }
+	})
+	],
     module: {
 	loaders: [
 	    {
