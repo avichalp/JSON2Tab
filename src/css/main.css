@@ -1,12 +1,9 @@
 a {
     text-decoration: initial;
-    color: #555;
+    color: "#555";
 }
 
 
 li:hover {
-    /*background: red;*/
     opacity: 0.5;
-    
-    
 }

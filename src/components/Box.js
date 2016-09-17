@@ -14,7 +14,7 @@ export default class Box extends React.Component {
 	    data: [],
 	    queryString: '?lat=28.4472372&lon=77.04061469999999',
 	    loaded: false,
-	    url: this.getUrl(),
+	    url: '',
 	    authKey: authKey,
 	    headers: {
 		'auth_key': authKey
@@ -33,7 +33,10 @@ export default class Box extends React.Component {
     }
 
     loadPromotionsFromServer() {
-	this.setState({loaded: false});
+	this.setState({
+	    loaded: false,
+	    url: this.getUrl()
+	});
 	var reqHeaders = new Headers();
 	reqHeaders.append('Content-Type', 'Application/Json');
 	for (var k in this.state.headers) {
@@ -58,7 +61,7 @@ export default class Box extends React.Component {
     }
 
     getUrl() {
-	const paths = JSON.parse(localStorage.getItem('paths'));
+	const paths = JSON.parse(window.localStorage.getItem('paths'));
 	const pathKey = this.props.location.pathname
 	.replace('dashboards', '')
 	.replace('/', '')
@@ -94,39 +97,42 @@ export default class Box extends React.Component {
 
     render() {
 	return (
-	    <div>
-	    <div>
-	    <h2>
-	      {this.props.location.pathname}< /h2>
-	    <div>Headers
-	    <input
-	      placeholder={"auth_key"}
-	      value={this.state.value}
-	      onChange={this.handleHeaderKeyChange} />
-	    <input
+		<div>
+		<div>
+		<h2>
+		{this.props.location.pathname}< /h2>
+		<div>Headers
 
-	      placeholder={this.state.headers.auth_key}
-	      value={this.state.value}
-	      onChange={this.handleHeaderValueChange} />
+	    <input
+	    placeholder={"auth_key"}
+	    value={this.state.value}
+	    onChange={this.handleHeaderKeyChange} />
+
+	    <input
+	    placeholder={this.state.headers.auth_key}
+	    value={this.state.value}
+	    onChange={this.handleHeaderValueChange} />
+
 	    <button
+	    onClick={this.addHeader}>Add< /button>
+		</div>
+		<span>QueryString: </span>
 
-	      onClick={this.addHeader}>Add< /button>
-	    < /div>
-	    <span>QueryString: </span>
 	    <input
+	    placeholder={this.state.queryString}
+	    value={this.state.value}
+	    onChange={this.handleQChange} />
 
-	      placeholder={this.state.queryString}
-	      value={this.state.value}
-	      onChange={this.handleQChange} />
 	    <button
+	    onClick={this.loadPromotionsFromServer}>Go!< /button>
 
-	      onClick={this.loadPromotionsFromServer}>Go!< /button>
 	    </div>
-	    <div>
+		<div>
+
 	    <Loader
 	      loaded={this.state.loaded}>
 	    <List
-	        data={this.state.data}
+		data={this.state.data}
 	      {...this.props} />
 	    </Loader>
 	    </div>

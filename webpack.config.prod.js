@@ -40,9 +40,7 @@ module.exports = {
 	]
     },
     devServer: {
-	contentBase: './dist',
-	hot: true,
-	inline: true
+	contentBase: './dist'
     },
     resolve: {
 	extensions: ['', '.js', '.jsx']

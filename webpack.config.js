@@ -4,15 +4,12 @@ const webpack = require('webpack')
 module.exports = {
     devtool: 'eval',
     entry: [
-	//'webpack-dev-server/client?http://localhost:8080',
-	//'webpack/hot/only-dev-server',
 	'./src/index.js'
     ],
     output: {
 	path: __dirname + '/dist/',
 	publicPath: '/dist/',
 	filename:  'bundle.js'
-
     },
     module: {
 	loaders: [
@@ -28,9 +25,12 @@ module.exports = {
 	]
     },
     devServer: {
-	contentBase: './dist',
-	hot: true,
-	inline: true
+	contentBase: './dist'
+    },
+    external: {
+	'cheerio': 'window',
+	'react/lib/ExecutionEnvironment': true,
+	'react/lib/ReactContext': true
     },
     resolve: {
 	extensions: ['', '.js', '.jsx']
