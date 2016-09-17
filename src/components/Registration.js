@@ -126,7 +126,7 @@ export default class Registration extends React.Component {
 
 	    </div>
 
-		<div>{this.state.dashboards.map(this.populateLinks)}</div>
+		<div style={style.container}>{this.state.dashboards.map(this.populateLinks)}</div>
 		<NotificationSystem ref="notificationSystem" style={style.notification}/>
 		</div>
 

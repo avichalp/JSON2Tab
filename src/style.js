@@ -1,6 +1,6 @@
 const style = {
     header: {
-	'background-color': '#555',
+	'backgroundColor': '#555',
 	'color': '#fff7f7',
 	'fontSize': '-webkit-xxx-large',
 	'fontFamily': 'monospace',
@@ -51,7 +51,15 @@ const style = {
 
 	    }
 	}
-    }
+    },
+    container: {
+	'display': 'flex',
+	'flexWrap': 'wrap',
+	'justifyContent': 'space-around',
+	'alignItems': 'center',
+	'alignContent': 'space-around'
+    },
+
 };
 
 export default style
