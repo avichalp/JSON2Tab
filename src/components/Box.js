@@ -101,24 +101,24 @@ export default class Box extends React.Component {
 		<div>
 		<div><header style={style.header}>{this.props.location.pathname}< /header></div>
 
-		<section>
+		<section style={style.section}>
 
-		<div style={style.textContainer}>
+		<div style={style.smallTextContainer}>
 		Headers
 		<input style={style.textBox} placeholder={"auth_key"} value={this.state.value} onChange={this.handleHeaderKeyChange} />
 		<input style={style.textBox} placeholder={this.state.headers.auth_key} value={this.state.value} onChange={this.handleHeaderValueChange} />
-		<button style={style.button} onClick={this.addHeader}>Add< /button>
+		<button style={style.button} onClick={this.addHeader}>+< /button>
 		</div>
 
-		<div style={style.textContainer}>
+		<div style={style.smallTextContainer}>
 		<span>QueryString: </span>
 		<input style={style.textBox} placeholder={this.state.queryString} value={this.state.value} onChange={this.handleQChange} />
-		<button style={style.button} onClick={this.loadPromotionsFromServer}>Go!< /button>
+		<button style={style.button} onClick={() => this.loadPromotionsFromServer(this.state.url)}>!< /button>
 		</div>
 
 		</section>
 
-		<section>
+		<section style={style.section}>
 		<div>
 		<Loader loaded={this.state.loaded}>
 		<List data={this.state.data} {...this.props} />

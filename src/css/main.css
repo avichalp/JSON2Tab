@@ -11,3 +11,9 @@ li:hover {
     border-color: #555;
     /*background: #555;*/
 }
+
+table, th, td {
+    border: 1px dotted #555;
+    font-family: monospace;
+    color: #555;
+}

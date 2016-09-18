@@ -18,7 +18,11 @@ const style = {
 	'listStyleType': 'NONE'
     },
     textContainer: {
-	'marginBottom': '2em'
+	'marginBottom': '2em',
+	'marginTop': '2em'
+    },
+    smallTextContainer: {
+	'marginBottom': '.01em'
     },
     button: {
 	'height': '2em',
@@ -59,6 +63,13 @@ const style = {
 	'alignItems': 'center',
 	'alignContent': 'space-around'
     },
+    section: {
+	'border': 'solid #555',
+	'borderWidth': '.125em',
+	'marginBottom': '3em',
+	'color': '#555',
+	'fontFamily': 'monospace'
+    }
 
 };
 
