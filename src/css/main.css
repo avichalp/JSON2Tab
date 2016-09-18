@@ -5,8 +5,15 @@ a {
 
 
 li:hover {
-    /*background: red;*/
     opacity: 0.5;
-    
-    
+    border: 0.06em solid black;
+    border-radius: 2em;
+    border-color: #555;
+    /*background: #555;*/
+}
+
+table, th, td {
+    border: 1px dotted #555;
+    font-family: monospace;
+    color: #555;
 }

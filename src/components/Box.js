@@ -14,7 +14,6 @@ export default class Box extends React.Component {
 	    data: [],
 	    queryString: '?lat=28.4472372&lon=77.04061469999999',
 	    loaded: false,
-	    url: this.getUrl(),
 	    authKey: authKey,
 	    headers: {
 		'auth_key': authKey
@@ -29,11 +28,17 @@ export default class Box extends React.Component {
     }
 
     componentDidMount() {
-	this.loadPromotionsFromServer();
+	this.setState({
+	    url: this.getUrl()
+	});
+	this.loadPromotionsFromServer(this.getUrl());
+
     }
 
-    loadPromotionsFromServer() {
-	this.setState({loaded: false});
+    loadPromotionsFromServer(endPoint) {
+	this.setState({
+	    loaded: false
+	});
 	var reqHeaders = new Headers();
 	reqHeaders.append('Content-Type', 'Application/Json');
 	for (var k in this.state.headers) {
@@ -41,8 +46,7 @@ export default class Box extends React.Component {
 		reqHeaders.append(k, this.state.headers[k])
 	    }
 	}
-	var finalUrl = 'http://192.168.99.100:8080/api/go?url=' + encodeURIComponent(this.state.url) + '&q=' + encodeURIComponent(this.state.queryString);
-	console.log(finalUrl);
+	var finalUrl = 'http://192.168.99.100:8080/api/go?url=' + encodeURIComponent(endPoint) + '&q=' + encodeURIComponent(this.state.queryString);
 	fetch(finalUrl, {
 	    method: 'GET',
 	    headers: reqHeaders,
@@ -58,7 +62,7 @@ export default class Box extends React.Component {
     }
 
     getUrl() {
-	const paths = JSON.parse(localStorage.getItem('paths'));
+	const paths = JSON.parse(window.localStorage.getItem('paths'));
 	const pathKey = this.props.location.pathname
 	.replace('dashboards', '')
 	.replace('/', '')
@@ -94,42 +98,34 @@ export default class Box extends React.Component {
 
     render() {
 	return (
-	    <div>
-	    <div>
-	    <h2>
-	      {this.props.location.pathname}< /h2>
-	    <div>Headers
-	    <input
-	      placeholder={"auth_key"}
-	      value={this.state.value}
-	      onChange={this.handleHeaderKeyChange} />
-	    <input
+		<div>
+		<div><header style={style.header}>{this.props.location.pathname}< /header></div>
 
-	      placeholder={this.state.headers.auth_key}
-	      value={this.state.value}
-	      onChange={this.handleHeaderValueChange} />
-	    <button
+		<section style={style.section}>
 
-	      onClick={this.addHeader}>Add< /button>
-	    < /div>
-	    <span>QueryString: </span>
-	    <input
+		<div style={style.smallTextContainer}>
+		Headers
+		<input style={style.textBox} placeholder={"auth_key"} value={this.state.value} onChange={this.handleHeaderKeyChange} />
+		<input style={style.textBox} placeholder={this.state.headers.auth_key} value={this.state.value} onChange={this.handleHeaderValueChange} />
+		<button style={style.button} onClick={this.addHeader}>+< /button>
+		</div>
 
-	      placeholder={this.state.queryString}
-	      value={this.state.value}
-	      onChange={this.handleQChange} />
-	    <button
+		<div style={style.smallTextContainer}>
+		<span>QueryString: </span>
+		<input style={style.textBox} placeholder={this.state.queryString} value={this.state.value} onChange={this.handleQChange} />
+		<button style={style.button} onClick={() => this.loadPromotionsFromServer(this.state.url)}>!< /button>
+		</div>
 
-	      onClick={this.loadPromotionsFromServer}>Go!< /button>
-	    </div>
-	    <div>
-	    <Loader
-	      loaded={this.state.loaded}>
-	    <List
-	        data={this.state.data}
-	      {...this.props} />
-	    </Loader>
-	    </div>
+		</section>
+
+		<section style={style.section}>
+		<div>
+		<Loader loaded={this.state.loaded}>
+		<List data={this.state.data} {...this.props} />
+		</Loader>
+		</div>
+		</section>
+
 	    </div>
 	);
     }

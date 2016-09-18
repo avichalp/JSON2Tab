@@ -1,13 +1,13 @@
 {
-  "name": "promotions-debugger",
+  "name": "JSON2TAB",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-      "build": "webpack --config ./webpack.config.js --progress --colors --hot",
-      "start": "NODE_ENV=production node ./src/server.js",
-      "startdev": "webpack-dev-server --progress --colors --hot --config ./webpack.config.js"
+    "test": "export NODE_ENV=testing|| set NODE_ENV=testing&& mocha --compilers js:babel-core/register --require ignore-styles --require ./test/helpers/browser.js \"./test/**/*@(.js|.jsx)\"",
+    "build-dev": "webpack --config ./webpack.config.js --progress --colors --hot",
+    "build-prod": "webpack --config ./webpack.config.prod.js --progress --colors --hot",
+    "start-dev": "webpack-dev-server --progress --colors --hot --config ./webpack.config.js"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +27,12 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-2": "^6.5.0",
+    "chai": "^3.5.0",
+    "enzyme": "^2.4.1",
+    "ignore-styles": "^5.0.1",
+    "jsdom": "^9.5.0",
+    "mocha": "^3.0.2",
+    "react-addons-test-utils": "^15.3.1",
     "react-hot-loader": "^1.3.0",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
@@ -43,7 +49,7 @@
     "react-notification-system": "^0.2.7",
     "react-router": "^2.5.0",
     "request": "^2.74.0",
-     "webpack-dev-middleware": "^1.7.0",
+    "webpack-dev-middleware": "^1.7.0",
     "webpack-hot-middleware": "^2.12.2"
   }
 }

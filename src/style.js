@@ -1,6 +1,6 @@
 const style = {
     header: {
-	'background-color': '#555',
+	'backgroundColor': '#555',
 	'color': '#fff7f7',
 	'fontSize': '-webkit-xxx-large',
 	'fontFamily': 'monospace',
@@ -18,7 +18,11 @@ const style = {
 	'listStyleType': 'NONE'
     },
     textContainer: {
-	'marginBottom': '2em'
+	'marginBottom': '2em',
+	'marginTop': '2em'
+    },
+    smallTextContainer: {
+	'marginBottom': '.01em'
     },
     button: {
 	'height': '2em',
@@ -51,7 +55,22 @@ const style = {
 
 	    }
 	}
+    },
+    container: {
+	'display': 'flex',
+	'flexWrap': 'wrap',
+	'justifyContent': 'space-around',
+	'alignItems': 'center',
+	'alignContent': 'space-around'
+    },
+    section: {
+	'border': 'solid #555',
+	'borderWidth': '.125em',
+	'marginBottom': '3em',
+	'color': '#555',
+	'fontFamily': 'monospace'
     }
+
 };
 
 export default style

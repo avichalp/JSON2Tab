@@ -160,27 +160,15 @@ export default class List extends React.Component {
 
 	return (
 	    <div>
-	    <div>
-	    <input
-	    style={style.input}
-	      placeholder="Column Name"
-	      value={this.state.value}
-	      onChange={this.getColumnName} />
-	    <input
-	      style={style.input}
-	      placeholder="feed.1.objects"
-	      value={this.state.value}
-	      onChange={this.getObjectPath} />
-	    <input
-	      style={style.input}
-	      placeholder="promotion.promotion_id"
-	      value={this.state.value}
-	      onChange={this.getPropertyPath} />
-	    <button
-	      style={style.button.go}
-	      onClick={this.addColumnData}>Add Column</ button>
-	    </div>
-	    <div>{table.toReact()}</div>
+
+		<div style={style.textContainer}>
+		<input style={style.textBox}  placeholder="Column Name" value={this.state.value} onChange={this.getColumnName} />
+		<input style={style.textBox} placeholder="feed.1.objects" value={this.state.value} onChange={this.getObjectPath} />
+		<input style={style.textBox} placeholder="promotion.promotion_id" value={this.state.value} onChange={this.getPropertyPath} />
+		<button style={style.button} onClick={this.addColumnData}></ button>
+		</div>
+
+		<div>{table.toReact()}</div>
 	    </div>
 	);
     }

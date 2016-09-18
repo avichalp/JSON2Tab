@@ -2,7 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 
 module.exports = {
-    devtool: 'eval',
+    devtool: 'cheap-module-source-map',
     entry: [
 	'./src/index.js'
     ],
@@ -10,7 +10,22 @@ module.exports = {
 	path: __dirname + '/dist/',
 	publicPath: '/dist/',
 	filename:  'bundle.js'
+
     },
+	plugins: [
+	new webpack.optimize.DedupePlugin(),
+	new webpack.optimize.UglifyJsPlugin({
+	    minimize: true,
+	    compress: {
+		warnings: false
+	    }
+	}),
+	new webpack.DefinePlugin({
+	    'process.env': {
+		'NODE_ENV': JSON.stringify('production')
+	    }
+	})
+	],
     module: {
 	loaders: [
 	    {
@@ -26,11 +41,6 @@ module.exports = {
     },
     devServer: {
 	contentBase: './dist'
-    },
-    external: {
-	'cheerio': 'window',
-	'react/lib/ExecutionEnvironment': true,
-	'react/lib/ReactContext': true
     },
     resolve: {
 	extensions: ['', '.js', '.jsx']

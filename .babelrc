@@ -1,13 +1,14 @@
 {
-	"presets": [
-		"es2015",
-		"react",
-		"stage-2"
-		],
-	"env": {
-		"development": {
-		"presets": ["react-hmre"]
-		   }		   
-    	}
+  "presets": ["es2015", "react", "stage-2"],
+   "env": {
+	  "development": {
+			 "presets": ["react-hmre"]
+	},
+	"test": {
+			 "presets": ["react-hmre", "es2015", "react"],
+			 "NODE_ENV": "production",
+			 "build": "NODE_ENV=production babel-node build"
+		}
+	},
 }
-						
+
