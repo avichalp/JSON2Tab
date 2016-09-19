@@ -12,7 +12,7 @@ Create a production build:<br>
 ##### Using Docker for development
 Once you have created a build. Create a docker build using the Dockerfile included in the repo:<br>
 ```docker build . -t=mydockerimage```<br>
-Run the container:
+Run the container:<br>
 ```docker run -t -i -p 8080:8080 -v=`pwd`:/json2tab -w=/json2tab mydockerimage```
 
 application is now running at port 8080
@@ -21,5 +21,5 @@ application is now running at port 8080
 `npm run build`
 `npm start`
 
-#### Using docker for deployment
+#### Using docker for deployment<br>
 ```docker run -t -i -p 8080:8080 -v=`pwd`:/json2tab -w=/json2tab mydockerimage```
