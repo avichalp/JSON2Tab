@@ -46,7 +46,7 @@ export default class Box extends React.Component {
 		reqHeaders.append(k, this.state.headers[k])
 	    }
 	}
-	var finalUrl = 'http://192.168.99.100:8080/api/go?url=' + encodeURIComponent(endPoint) + '&q=' + encodeURIComponent(this.state.queryString);
+	var finalUrl = 'http://localhost:8080/api/go?url=' + encodeURIComponent(endPoint) + '&q=' + encodeURIComponent(this.state.queryString);
 	fetch(finalUrl, {
 	    method: 'GET',
 	    headers: reqHeaders,

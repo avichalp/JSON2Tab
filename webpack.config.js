@@ -1,14 +1,14 @@
-const path = require('path')
-const webpack = require('webpack')
+const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-    devtool: 'eval',
+    //devtool: 'eval',
     entry: [
-	'./src/index.js'
+	'./src/index'
     ],
     output: {
-	path: __dirname + '/dist/',
-	publicPath: '/dist/',
+	path: path.join(__dirname, '/dist'),
+	publicPath: '/',
 	filename:  'bundle.js'
     },
     module: {
@@ -25,7 +25,8 @@ module.exports = {
 	]
     },
     devServer: {
-	contentBase: './dist'
+	contentBase: './dist',
+	hot: true
     },
     external: {
 	'cheerio': 'window',
@@ -34,5 +35,10 @@ module.exports = {
     },
     resolve: {
 	extensions: ['', '.js', '.jsx']
-    }
+    },
+    plugins: [
+	new webpack.optimize.OccurenceOrderPlugin(),
+	new webpack.HotModuleReplacementPlugin(),
+	new webpack.NoErrorsPlugin()
+    ]
 };
