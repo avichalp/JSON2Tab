@@ -53,6 +53,7 @@
     "react-notification-system": "^0.2.7",
     "react-router": "^2.5.0",
     "request": "^2.78.0",
-    "style-loader": "^0.13.1"
+      "style-loader": "^0.13.1",
+      "webpack": "^1.13.1"
   }
 }
