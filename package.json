@@ -6,7 +6,7 @@
   "scripts": {
     "test": "export NODE_ENV=testing|| set NODE_ENV=testing&& mocha --compilers js:babel-core/register --require ignore-styles --require ./test/helpers/browser.js \"./test/**/*@(.js|.jsx)\"",
     "build-dev": "webpack -p --config webpack.config.js",
-    "postinstall": "webpack -p --config webpack.prod.config.js",
+      "postinstall": "webpack -p --config webpack.prod.config.js",
     "start": "node server.js"
   },
   "keywords": [],

@@ -19,10 +19,14 @@ const style = {
     },
     textContainer: {
 	'marginBottom': '2em',
-	'marginTop': '2em'
+	'marginTop': '2em',
+	'display': 'flex'
     },
     smallTextContainer: {
-	'marginBottom': '.01em'
+	'marginLeft': '.5em',
+	'display': 'flex',
+	'align-items': 'baseline',
+	'justify-content': 'initial'
     },
     button: {
 	'height': '2em',
@@ -39,9 +43,9 @@ const style = {
     },
     textBox: {
 	'margin': '0.5em',
-	'width': '20em',
+	'width': '40em',
 	'height': '1em',
-	'font-size': 'medium',
+	'fontSize': 'medium',
 	'fontFamily': 'monospace',
 	'border': '0',
 	'outline': '0',
@@ -68,7 +72,8 @@ const style = {
 	'borderWidth': '.125em',
 	'marginBottom': '3em',
 	'color': '#555',
-	'fontFamily': 'monospace'
+	'fontFamily': 'monospace',
+	'padding': '1em'
     }
 
 };
