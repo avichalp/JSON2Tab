@@ -1,6 +1,7 @@
 a {
     text-decoration: initial;
     color: #555;
+    padding: 1em;
 }
 
 
@@ -9,7 +10,6 @@ li:hover {
     border: 0.06em solid black;
     border-radius: 2em;
     border-color: #555;
-    /*background: #555;*/
 }
 
 table, th, td {
