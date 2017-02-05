@@ -1,19 +1,22 @@
+body {
+    font-family: monospace;
+    color: rgb(85, 85, 85);
+}
 a {
     text-decoration: initial;
     color: #555;
-    padding: 1em;
-}
-
-
-li:hover {
-    opacity: 0.5;
-    border: 0.06em solid black;
-    border-radius: 2em;
-    border-color: #555;
 }
 
 table, th, td {
     border: 1px dotted #555;
     font-family: monospace;
     color: #555;
+}
+.delete-button{
+    position: relative;
+    left: 12em;
+    top: -2em;
+    border-radius: 6px;
+    border-color: #ccc;
+    background: #ccc;
 }

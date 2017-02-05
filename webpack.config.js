@@ -14,9 +14,14 @@ module.exports = {
     module: {
 	loaders: [
 	    {
+		test: /\.html$/,
+		loader: 'html?minimize=false'
+		//exclude: [root('src', 'index.html')]
+	    },
+	    {
 		test: /\.jsx?$/,
 		exclude: /node_modules/,
-		loader: 'react-hot!babel'
+		loader: 'react-hot!babel'		
 	    },
 	    {
 		test: /\.css$/,

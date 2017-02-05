@@ -104,18 +104,20 @@ export default class Box extends React.Component {
 		<section style={style.section}>
 
 		<div style={style.smallTextContainer}>
-		Headers
+		<div>Query String: </div>
+		<input style={style.textBox} placeholder={this.state.queryString} value={this.state.value} onChange={this.handleQChange} />
+		<input style={style.textBox} placeholder={this.state.queryString} value={this.state.value} onChange={this.handleQChange} />
+		<button style={style.button} >+< /button>
+		</div>
+	    
+		<div style={style.smallTextContainer}>
+		<div>Headers</div>
 		<input style={style.textBox} placeholder={"auth_key"} value={this.state.value} onChange={this.handleHeaderKeyChange} />
 		<input style={style.textBox} placeholder={this.state.headers.auth_key} value={this.state.value} onChange={this.handleHeaderValueChange} />
 		<button style={style.button} onClick={this.addHeader}>+< /button>
 		</div>
 
-		<div style={style.smallTextContainer}>
-		<span>QueryString: </span>
-		<input style={style.textBox} placeholder={this.state.queryString} value={this.state.value} onChange={this.handleQChange} />
 		<button style={style.button} onClick={() => this.loadPromotionsFromServer(this.state.url)}>!< /button>
-		</div>
-
 		</section>
 
 		<section style={style.section}>

@@ -1,10 +1,70 @@
+import Immutable from 'immutable';
 import React from 'react';
 import { Link } from 'react-router';
 import style from '../style';
 import '../css/main.css';
 import NotificationSystem  from 'react-notification-system';
+import Radium from 'radium';
 
-export default class Registration extends React.Component {
+
+class ListItem extends React.Component {
+    constructor(props, context) {
+	super(props, context);
+	this.state = {
+	    showDeleteButtton: false
+	};	
+	this._handleMouseOver = this._handleMouseOver.bind(this);
+	this._handleMouseLeave = this._handleMouseLeave.bind(this);
+	this._stopPropogation = this._stopPropogation.bind(this);
+    }
+
+    _handleMouseOver(event) {
+	console.log("mouse over");
+	this.setState({
+	    showDeleteButtton: true
+	});
+    }
+
+    _handleMouseLeave(event) {			
+	this.setState({
+	    showDeleteButtton: false
+	});
+	console.log("mouse out");	
+    }
+
+    _stopPropogation(event) {
+	console.log("stopped event propogation");
+	event.stopPropagation();
+    }
+            
+    render() {
+	var link = this.props.link;
+	if (this.state.showDeleteButtton) {
+		
+	    return (
+		    <div style={style.itemContainer} onMouseLeave={this._handleMouseLeave}>
+		    <li style={style.liAnchor} key={link} id={link} ref={(li)=>{this.listItem = li}}>
+		    <Link className={'style.item'} ref={'deleteButton' + link} to={'/dashboards/' + link}
+		onMouseOver={this._handleMouseOver}>{link}</ Link>		    
+		    <button key={Math.random(100).toString()} style={style.deleteButton} onClick={() => this.props.deleteButtonClickHandler(link)}>X</button>
+		    </li>
+		    </div>);
+	} else {
+	    return  (
+		    <div style={style.itemContainer} onMouseOut={this._handleMouseLeave}>
+		    <li style={style.liAnchor} key={link} id={link} ref={(li)=>{this.listItem = li}} >		    
+		    <Link className={'style.item'} ref={'deleteButton' + link} to={'/dashboards/' + link}
+		onMouseOver={this._handleMouseOver}>{link}</ Link>		   
+		    <button key={Math.random(100).toString()} style={style.deleteButtonHidden}>X</button>
+		    </li>
+		    </div>
+	    );		
+	}	
+    }
+}
+
+
+class Registration extends React.Component {
 
     constructor(props, context) {
 	super(props, context);
@@ -19,6 +79,7 @@ export default class Registration extends React.Component {
 	this.populateLinks = this.populateLinks.bind(this);
 	this._validateUrl = this._validateUrl.bind(this);
 	this._validateName = this._validateName.bind(this);
+	this.deleteButtonClickHandler = this.deleteButtonClickHandler.bind(this);
     }
 
     componentDidMount() {
@@ -31,6 +92,18 @@ export default class Registration extends React.Component {
 
     }
 
+    deleteButtonClickHandler(dashboardToDelete) {
+	console.log(this.state);
+	var storedPaths = JSON.parse(localStorage.getItem('paths'));
+	delete storedPaths[dashboardToDelete];
+	localStorage.setItem('paths', JSON.stringify(storedPaths));
+	this.setState({
+	    dashboards: this.state.dashboards.filter(
+		dashboard => dashboard !== dashboardToDelete
+	    )
+	});
+    }
+    
     _addNotification(event, notifType, message) {
 	event.preventDefault();
 	switch (notifType) {
@@ -47,7 +120,7 @@ export default class Registration extends React.Component {
 		message: message,
 		level: 'success',
 		position: 'tr'
-	    })
+	    });
 
 	}
 
@@ -58,7 +131,7 @@ export default class Registration extends React.Component {
     }
 
     handleNameChange(event) {
-	this.setState({name: event.target.value})
+	this.setState({name: event.target.value});
     }
 
     save(key, toPersist) {
@@ -66,6 +139,7 @@ export default class Registration extends React.Component {
 	paths[key] = toPersist;
 	localStorage.setItem('paths', JSON.stringify(paths));
     }
+    
     _validateUrl() {
 	var re = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
 	var match = re.test(this.state.url)
@@ -101,17 +175,10 @@ export default class Registration extends React.Component {
 	}
 
     }
-
+        
     populateLinks(link) {
-	//<button style={style.deleteButton}>X</button>
-	return (
-
-		<li style={style.liAnchor} key={link} onClick={this._handleOnClick}
-	    id={link}>
-
-		<Link ref={'deleteButton' + link} to={'/dashboards/' + link}>{link}</ Link>
-
-		</li>
+	return (		
+		<ListItem link={link} deleteButtonClickHandler={this.deleteButtonClickHandler} />
 	);
     }
 
@@ -122,7 +189,7 @@ export default class Registration extends React.Component {
 		<div style={style.textContainer}>
 		<input style={style.textBox} placeholder="Name eg: MerchantsAPI" value={this.state.value} onChange={this.handleNameChange} />
 		<input style={style.textBox} placeholder="https://api.google.com/" value={this.state.value} onChange={this.handleUrlChange} />
-		<button style={style.button}onClick={this.handleRegister}> </button>
+		<button key="two" style={style.button}onClick={this.handleRegister}> </button>
 
 	    </div>
 
@@ -134,3 +201,9 @@ export default class Registration extends React.Component {
     }
 
 }
+
+
+
+
+
+export default Registration;

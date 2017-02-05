@@ -9,13 +9,12 @@ const style = {
     li: {
 	'display': 'inline-block'
     },
-    liAnchor: {
-	'textDecoration': 'initial',
-	'color': '#555',
-	'fontFamily': 'monospace',
-	'fontSize': 'xx-large',
-	'margin': '0.2em',
-	'listStyleType': 'NONE'
+    liAnchor: {	
+	'color': '#555',	
+	'fontSize': 'xx-large',	
+	'listStyleType': 'NONE',
+	'display': 'flex',
+	'alignItems': 'flex-start',
     },
     textContainer: {
 	'marginBottom': '2em',
@@ -31,26 +30,30 @@ const style = {
     button: {
 	'height': '2em',
 	'width': '2em',
-	'border': '0',
 	'borderRadius': '.5em'
     },
     deleteButton: {
-	'height': '2em',
-	'width': '2em',
-	'border': '0',
-	'borderRadius': '.5em',
-	'marginLeft': '3em'
+	'borderRadius': '36px',
+	'background': '#fff',
+	'borderColor': '#555',
+	'cursor': 'pointer'
+    },
+    deleteButtonHidden: {
+	'visibility': 'hidden'
     },
     textBox: {
 	'margin': '0.5em',
 	'width': '40em',
 	'height': '1em',
 	'fontSize': 'medium',
-	'fontFamily': 'monospace',
-	'border': '0',
-	'outline': '0',
+	'fontFamily': 'monospace',	
 	'background': 'transparent',
 	'borderBottom': '.0000001em solid #bfb6b6'
+    },
+    item: {
+
+    },
+    itemContainer: {
 
     },
     notification: {
