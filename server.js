@@ -12,7 +12,7 @@ if(process.env.NODE_ENV !== 'production') {
     var webpack = require('webpack');
     var config = require('./webpack.config');
     var compiler = webpack(config);
-
+    PORT = 5000;
     app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
     app.use(webpackHotMiddleware(compiler));
 }

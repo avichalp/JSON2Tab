@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "export NODE_ENV=testing|| set NODE_ENV=testing&& mocha --compilers js:babel-core/register --require ignore-styles --require ./test/helpers/browser.js \"./test/**/*@(.js|.jsx)\"",
-    "build-dev": "webpack -p --config webpack.config.js",
+    "build-dev": "webpack --config webpack.config.js",
+    "start-dev": "webpack --config webpack.config.js && webpack-dev-server",
     "postinstall": "webpack -p --config webpack.prod.config.js",
     "start": "node server.js"
   },
@@ -24,15 +25,16 @@
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "chai": "^3.5.0",
     "enzyme": "^2.4.1",
+    "http-proxy-middleware": "^0.17.3",
     "ignore-styles": "^5.0.1",
     "jsdom": "^9.5.0",
     "mocha": "^3.0.2",
     "react-addons-test-utils": "^15.3.1",
     "react-hot-loader": "^1.3.0",
     "react-loader": "^2.4.0",
-    "webpack": "^1.13.1",
+    "webpack": "^2.0.0",
     "webpack-dev-middleware": "^1.6.1",
-    "webpack-dev-server": "^1.14.1",
+    "webpack-dev-server": "^2.3.0",
     "webpack-hot-middleware": "^2.10.0"
   },
   "dependencies": {
@@ -47,17 +49,13 @@
     "d3": "^3.5.17",
     "express": "^4.13.4",
     "fixed-data-table": "^0.6.0",
-    "immutable": "^3.8.1",
-    "radium": "^0.18.1",
     "react": "^15.1.0",
     "react-bootstrap": "^0.29.5",
     "react-dom": "^15.1.0",
     "react-faux-dom": "^2.6.2",
-    "react-hot-loader": "^1.3.0",
     "react-notification-system": "^0.2.7",
     "react-router": "^2.5.0",
     "request": "^2.78.0",
-    "style-loader": "^0.13.1",
-    "webpack": "^1.13.1"
+    "style-loader": "^0.13.1"
   }
 }

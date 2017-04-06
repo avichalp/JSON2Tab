@@ -3,133 +3,189 @@ import Loader from 'react-loader';
 import List from './List';
 import style from '../style';
 
-const authKey = "c0915c6ad1e5720c764559053e16dc75fde6c70b456af3491a3ff135cfcdf0ff";
-
 
 export default class Box extends React.Component {
 
-    constructor(props, context) {
-	super(props, context);
-	this.state = {
-	    data: [],
-	    queryString: '?lat=28.4472372&lon=77.04061469999999',
-	    loaded: false,
-	    authKey: authKey,
-	    headers: {
-		'auth_key': authKey
-	    }
-	};
-	this.loadPromotionsFromServer = this.loadPromotionsFromServer.bind(this);
-	this.getUrl = this.getUrl.bind(this);
-	this.handleQChange = this.handleQChange.bind(this);
-	this.handleHeaderKeyChange = this.handleHeaderKeyChange.bind(this);
-	this.handleHeaderValueChange = this.handleHeaderValueChange.bind(this);
-	this.addHeader = this.addHeader.bind(this);
+  constructor(props, context) {
+    super(props, context);
+    this.endpoint = 'http://localhost:8080/api/go';
+    this.state = {
+      data: [],
+      url: this.getData('url'),
+      headers: this.getData('headers') || [{}],
+      query: this.getData('query') || [{}],
+      loaded: false,
+      queryCount: this.getData('query').length || 0,
+      headerCount: this.getData('headers').length || 0
+    };
+
+    this.loadPromotionsFromServer(this.getData('url'));
+
+    this.createQueryString = this.createQueryString.bind(this);
+    this.loadPromotionsFromServer = this.loadPromotionsFromServer.bind(this);
+    this.getData = this.getData.bind(this);
+    this.setData = this.setData.bind(this);
+    this.addInputObject = this.addInputObject.bind(this);
+    this.deleteInputObject = this.deleteInputObject.bind(this);
+    this.prettyPrintHeaders = this.prettyPrintHeaders.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.renderInput = this.renderInput.bind(this);
+    this.renderList = this.renderList.bind(this);
+
+  }
+
+  createQueryString() {
+    var queryString = '?';
+    this.state.query
+      .filter(q => q.key && q.value)
+      .forEach(q => {
+        queryString = queryString + q.key + '=' + q.value + '&';
+      });
+    queryString = queryString.substring(0, queryString.length - 1);
+
+    return queryString;
+  }
+
+  loadPromotionsFromServer(endPoint) {
+    this.setState({loaded: false});
+    var reqHeaders = new Headers();
+    var queryString = this.createQueryString();
+    reqHeaders.append('Content-Type', 'Application/Json');
+    this.state.headers
+      .filter(h => h.key && h.value)
+      .forEach(h => reqHeaders.append(h.key, h.value));
+
+    var finalUrl = this.endpoint + '?url=' +
+        encodeURIComponent(endPoint) +
+        '&q=' + encodeURIComponent(queryString);
+
+    fetch(finalUrl, {
+      method: 'GET',
+      headers: reqHeaders
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        this.setState({data: response, loaded: true});
+      })
+      .catch((err) => console.log(err));
+  }
+
+  getData(key) {
+    const paths = JSON.parse(window.localStorage.getItem('paths'));
+    const pathKey = this.props.location.pathname
+          .replace('dashboards', '')
+          .replace('/', '')
+          .replace('/', '');
+    return paths[pathKey][key];
+  }
+
+  setData(inputType) {
+    const paths = JSON.parse(window.localStorage.getItem('paths'));
+    const pathKey = this.props.location.pathname
+          .replace('dashboards', '')
+          .replace('/', '')
+          .replace('/', '');
+    paths[pathKey][inputType] = this.state[inputType];
+    localStorage.setItem('paths', JSON.stringify(paths));
+  }
+
+  /**
+   * inputType: "query" or "headers". There are two types of inputs.
+   * inputObject: Object of either query or header.
+   * changeType: Change can be in either `key` or `value` of either headers or query input objects.
+   */
+  handleChange(evt, inputType, inputObject, changeType) {
+    this.state[inputType].forEach(function(q) {
+      if (q.id === inputObject.id) {
+        q[changeType] = evt.target.value;
+      }
+    });    
+    inputObject['changeType'] = evt.target.value;
+    // wtire to localStorage
+    this.setData(inputType);
+    this.setState({...this.state});
+  }
+
+  addInputObject(inputType, counter) {
+    this.state[inputType].push({
+      id: ++this.state[counter]
+    });
+    this.setState({...this.state});
+  }
+
+  deleteInputObject(inputObject, inputType) {
+    console.log(inputObject, inputType)
+    console.log(this.state)
+    var selectedInputObject = this.state[inputType].filter(input => input.id === inputObject.id);
+
+    if (selectedInputObject) {
+      this.state[inputType].splice(this.state[inputType].indexOf(selectedInputObject), 1);
+      this.setData(inputType);
+      this.setState({...this.state});
     }
 
-    componentDidMount() {
-	this.setState({
-	    url: this.getUrl()
-	});
-	this.loadPromotionsFromServer(this.getUrl());
+  }
 
+  renderInput(input, inputType) {
+    console.log(this.state);
+    return (
+      <div key={input.id}>
+        <input style={style.textBox} placeholder={input.key}
+               value={input.key} onChange={(event) => this.handleChange(event, inputType, input, 'key')} />
+        <input style={style.textBox} id={input} placeholder={input.value}
+               value={input.value} onChange={(event) => this.handleChange(event, inputType, input, 'value')} />
+        <button style={style.deleteButton} onClick={() => this.deleteInputObject(input, inputType)}>X</button>
+      </div>
+    );
+  }
+
+  prettyPrintHeaders(headerText) {
+    return (<div>{headerText}</div>);
+  }
+
+  renderList() {
+    if (this.state.data) {
+      return <List data={this.state.data} {...this.props} />;
+    } else {
+      return <Loader loaded={true}> </Loader>;
     }
+  }
 
-    loadPromotionsFromServer(endPoint) {
-	this.setState({
-	    loaded: false
-	});
-	var reqHeaders = new Headers();
-	reqHeaders.append('Content-Type', 'Application/Json');
-	for (var k in this.state.headers) {
-	    if (this.state.headers.hasOwnProperty(k)){
-		reqHeaders.append(k, this.state.headers[k])
-	    }
-	}
-	var finalUrl = 'http://localhost:8080/api/go?url=' + encodeURIComponent(endPoint) + '&q=' + encodeURIComponent(this.state.queryString);
-	fetch(finalUrl, {
-	    method: 'GET',
-	    headers: reqHeaders,
-	})
-	    .then((response) => response.json())
-	    .then((response) => {
-		this.setState({
-		    data: response,
-		    loaded: true
-		})
-	    })
-	.catch((err) => console.log(err));
-    }
-
-    getUrl() {
-	const paths = JSON.parse(window.localStorage.getItem('paths'));
-	const pathKey = this.props.location.pathname
-	.replace('dashboards', '')
-	.replace('/', '')
-	.replace('/', '');
-	return paths[pathKey].url;
-    }
-
-    handleQChange(evt) {
-	this.setState({
-	    queryString: '?' + evt.target.value,
-	});
-    }
-
-    handleHeaderKeyChange(evt) {
-	this.setState({
-	    'headerKey': evt.target.value
-	});
-    }
-
-    handleHeaderValueChange(evt) {
-	this.setState({
-	    'headerValue': evt.target.value
-	});
-    }
-
-    addHeader() {
-	let headers = this.state.headers;
-	headers[this.state.headerKey] = this.state.headerValue;
-	this.setState({
-	    headers: headers
-	});
-    }
-
-    render() {
-	return (
-		<div>
-		<div><header style={style.header}>{this.props.location.pathname}< /header></div>
-
-		<section style={style.section}>
-
-		<div style={style.smallTextContainer}>
-		<div>Query String: </div>
-		<input style={style.textBox} placeholder={this.state.queryString} value={this.state.value} onChange={this.handleQChange} />
-		<input style={style.textBox} placeholder={this.state.queryString} value={this.state.value} onChange={this.handleQChange} />
-		<button style={style.button} >+< /button>
-		</div>
-	    
-		<div style={style.smallTextContainer}>
-		<div>Headers</div>
-		<input style={style.textBox} placeholder={"auth_key"} value={this.state.value} onChange={this.handleHeaderKeyChange} />
-		<input style={style.textBox} placeholder={this.state.headers.auth_key} value={this.state.value} onChange={this.handleHeaderValueChange} />
-		<button style={style.button} onClick={this.addHeader}>+< /button>
-		</div>
-
-		<button style={style.button} onClick={() => this.loadPromotionsFromServer(this.state.url)}>!< /button>
-		</section>
-
-		<section style={style.section}>
-		<div>
-		<Loader loaded={this.state.loaded}>
-		<List data={this.state.data} {...this.props} />
-		</Loader>
-		</div>
-		</section>
-
-	    </div>
-	);
-    }
+  render() {
+    return (
+      <div>
+        <div><header style={style.header}>{this.props.location.pathname}</header></div>
+        <section style={style.section}>
+          <div style={style.inputContainer}>
+            <div style={style.smallTextContainer}>
+              <div style={style.inputTitle}>Query</div>
+              <div style={style.queryString}>{this.state.url + this.createQueryString()}</div>
+              {this.state.query.map(queryInput => this.renderInput(queryInput, 'query'))}
+              <button style={style.button} onClick={() => this.addInputObject('query', 'queryCount')}>Add Query String< /button>
+            </div>
+            <div style={style.smallTextContainer}>
+              <div style={style.inputTitle}>Headers</div>
+              <div style={style.queryString}>
+                {this.state.headers.filter(h => h.key && h.value).map(h => h.key + ": " + h.value).map(this.prettyPrintHeaders)}
+              </div>
+              {this.state.headers.map(key => this.renderInput(key, 'headers'))}
+              <button style={style.button} onClick={() => this.addInputObject('headers', 'headerCount')}>Add Header< /button>
+            </div>        
+            <div style={style.goButtonContainer}>
+              <button style={style.button} onClick={() => this.loadPromotionsFromServer(this.state.url)}>GO< /button>
+            </div>
+          </div>
+        </section>
+        <section style={style.section}>
+          <div>
+            <Loader loaded={this.state.loaded}>
+              {this.renderList()}
+            </Loader>
+          </div>
+        </section>
+      </div>
+    );
+  }
 
 }
